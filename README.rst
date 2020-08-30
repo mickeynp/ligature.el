@@ -19,11 +19,11 @@ correctly:
 
 1. You must use Emacs 27.1 or later;
 
-   You can check by typing `M-x emacs-version`
+   You can check by typing ``M-x emacs-version``
 
 2. Your Emacs must be built with Harfbuzz enabled -- this is the default as of Emacs 27.1, but obscure platforms may not support it;
 
-   You can check by typing `C-h v system-configuration-features`. Search for the word `HARFBUZZ`.
+   You can check by typing ``C-h v system-configuration-features``. Search for the word ``HARFBUZZ``.
 
 3. You must have a font that supports the particular typographical ligature you wish to display. Emacs should skip the ones it does not recognize, however;
 
@@ -34,12 +34,12 @@ correctly:
 
 4. Ideally, your Emacs is built with Cairo support. Without it, you may experience issues;
 
-   You can check by typing `C-h v cairo-version-string`. If you cannot
+   You can check by typing ``C-h v cairo-version-string``. If you cannot
    find it, you probably don't have it built: you can double check by
-   looking at `system-configuration-features` -- see above.
+   looking at ``system-configuration-features`` -- see above.
 
    a. Older versions of Cairo apparently have some issues.
-      `cairo-version-string' should say "1.16.0" or later.
+      ``cairo-version-string`' should say "1.16.0" or later.
 
       See above. It may work perfectly fine with a lower version, however.
 
