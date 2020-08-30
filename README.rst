@@ -21,23 +21,18 @@ correctly:
 
    You can check by typing `M-x emacs-version`
 
-2. Your Emacs must be built with Harfbuzz enabled -- this is the
-default as of Emacs 27.1, but obscure platforms may not support
-it;
+2. Your Emacs must be built with Harfbuzz enabled -- this is the default as of Emacs 27.1, but obscure platforms may not support it;
 
    You can check by typing `C-h v system-configuration-features`. Search for the word `HARFBUZZ`.
 
-3. You must have a font that supports the particular typographical
-ligature you wish to display. Emacs should skip the ones it does
-not recognize, however;
+3. You must have a font that supports the particular typographical ligature you wish to display. Emacs should skip the ones it does not recognize, however;
 
    Common programming fonts include `Cascadia Code
    <https://github.com/microsoft/cascadia-code>`__ and `Fira Code
    <https://github.com/tonsky/FiraCode>`__. For variable width fonts,
    the world is your oyster.
 
-4. Ideally, your Emacs is built with Cairo support. Without it,
-you may experience issues;
+4. Ideally, your Emacs is built with Cairo support. Without it, you may experience issues;
 
    You can check by typing `C-h v cairo-version-string`. If you cannot
    find it, you probably don't have it built: you can double check by
