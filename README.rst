@@ -39,7 +39,7 @@ correctly:
    looking at ``system-configuration-features`` -- see above.
 
    a. Older versions of Cairo apparently have some issues.
-      ``cairo-version-string`' should say "1.16.0" or later.
+      ``cairo-version-string`` should say "1.16.0" or later.
 
       See above. It may work perfectly fine with a lower version, however.
 
