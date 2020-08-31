@@ -10,6 +10,9 @@ That is useful if you only want a subset of the ligatures in certain
 major modes, for instance, or if you want to ensure that some modes
 have no ligatures at all.
 
+If you know what you're doing, you can skip to the end for an example
+that works with ``Cascadia Code`` (and most probably other fonts, too).
+
 Compatibility and Version Requirements
 ======================================
 
@@ -44,27 +47,61 @@ correctly:
       See above. It may work perfectly fine with a lower version, however.
 
 
+How does it work?
+=================
+
+Unlike almost all text editors that support ligatures, you are free to choose which ligatures you want and which modes they apply to. That is rather important as you may only want some ligatures in certain modes, and perhaps none at all in other modes. With this package you can freely pick and choose.
+
+Each buffer you want the ligatures to apply to require a call to ``ligature-generate-ligatures``. That command will check against a table of registered ligatures if the current buffer's major mode has any associated ligatures and, if it does, what they are. The command will check against anything that may be considered a valid parent of your buffer's major mode: for instance, a lot of programming major modes inherit from ``prog-mode``, so assigning ligatures to that major mode is a good way to ensure they work in most programming modes.
+
+To create a ligature mapping you can either update the alist ``ligature-composition-table`` directly or use the helper function ``ligature-set-ligatures``. I recommend you start with the latter helper function and only modify the table if you have complex requirements.
+
+Here is a simple example -- for a full, ready-to-go example, see the next section.
+
+::
+
+  (ligature-set-ligatures '(python-mode c-mode java-mode) '("!=" "==" "!=="))
+
+That will associate those three ligatures to the three modes in the list. Next, enable ``global-ligature-mode``, if you want ligature checks carried on all buffers, or in specific buffers with ``ligature-mode``.
+
+You can also enable ligature mappings for all possible buffer major modes by replacing ``MODES`` with ``t``::
+
+  (ligature-set-ligatures 't '("www"))
+
+Or in just a single mode::
+
+  (ligature-set-ligatures 'html-mode '("www"))
+
+If your requirements are complex, such as support for Fira Code's arrows you will have to amend the ``ligature-composition-table`` directly, like so::
+
+  (add-to-list 'ligature-composition-table `(rst-mode ("=" . ,(rx (+ "=")))))
+
+NOTE: Be careful when adding to the ligature composition table; you may override existing ligatures you've already created. You may have to manually 'merge' the ones you create with ``ligature-set-ligatures`` using regular expressions of your own!
+
+
 How do I install it?
 ====================
 
-MELPA support etc. is coming soon, but until then, you can clone this
-repository and then add this to your init file::
+MELPA support etc. is coming soon, but until then, you can clone the repository and paste one of the example snippets below.
+
+Cascadia Code
+-------------
+
+This example snippet enables all ligatures for ``prog-mode`` and any
+major mode that derives from that mode; that is usually most
+programming-related modes. It's designed for the *Cascadia Code* font;
+you may find it won't work 100% if you use a different one.
+
+::
 
   (use-package ligature
-    ;; To add ligature support to a major mode, add it here.
-    :hook ((python-mode . ligature-generate-ligatures)
-           (web-mode . ligature-generate-ligatures)
-           (emacs-lisp-mode . ligature-generate-ligatures))
-    ;; This is the path to where you cloned this git repository
-    :load-path "~/.emacs.d/packages/ligature"
     :config
-    ;; This configures "Cascadia Code" for all `prog-mode`-derived major
-    ;; modes. Feel free to tweak this to your liking. You can remove any
-    ;; ligatures you dislike.
-    ;;
-    ;; If you use another font, some (or all) of the ligatures may not
-    ;; work. Please consult the manual for your font to find the ones
-    ;; your font supports.
+    ;; Enable the "www" ligature in every possible major mode
+    (ligature-set-ligatures 't '("www"))
+    ;; Enable traditional ligature support in eww-mode, if the
+    ;; `variable-pitch' face supports it
+    (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+    ;; Enable all Cascadia Code ligatures in programming modes
     (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
                                          ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
                                          "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
@@ -78,8 +115,17 @@ repository and then add this to your init file::
                                          "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
                                          "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                          "\\" "://"))
-    ;; An example showing how to add a list of ligatures to a group
-    ;; similar of major modes. You can add as many as you want.
-    (ligature-set-ligatures '(html-mode web-mode) '("<!--" "-->" "</>" "</" "/>" "://")))
+    ;; Enables ligature checks globally in all buffers. You can also do it
+    ;; per mode with `ligature-mode'.
+    (global-ligature-mode t))
 
-Please read the in-lined comments and make changes where required.
+This is just an example. It's likely you'll want to configure it.
+Please open ``ligature.el`` and read the commentary. I also recommend
+you read the docstring for ``ligature-set-ligatures``.
+
+Can I contribute support for more fonts?
+========================================
+
+I'm glad you asked. Yes, please. If you want to configure ligatures
+for common programming fonts not already listed here, please raise a
+PR.

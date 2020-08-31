@@ -60,37 +60,54 @@
 ;;
 ;; To install this package you should use `use-package', like so:
 ;;
-(use-package ligature
-  :hook ((web-mode . ligature-generate-ligatures)
-         (html-mode . ligature-generate-ligatures))
-  :config
-  ;; Classic ligatures for eww-mode.
-  (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
-  ;; Add fancy JSX and HTML-related ligatures (</>, </, />, <!--, -->)
-  (ligature-set-ligatures '(html-mode web-mode) '("<!--" "-->" "</>" "</" "/>" "://"))
-  ;; Add "www" ligature _everywhere_
-  (ligature-set-ligatures 't '("www")))
+;; (use-package ligature
+;;   :config
+;;   ;; Enable the "www" ligature in every possible major mode
+;;   (ligature-set-ligatures 't '("www"))
+;;   ;; Enable traditional ligature support in eww-mode, if the
+;;   ;; `variable-pitch' face supports it
+;;   (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+;;   ;; Enable all Cascadia Code ligatures in programming modes
+;;   (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+;;                                        ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+;;                                        "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+;;                                        "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+;;                                        "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+;;                                        "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+;;                                        "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+;;                                        "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+;;                                        ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+;;                                        "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+;;                                        "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+;;                                        "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+;;                                        "\\" "://"))
+;;   ;; Enables ligature checks globally in all buffers.  You can also do it
+;;   ;; per mode with `ligature-mode'.
+;;   (global-ligature-mode t))
 ;;
 ;; The example above registers a couple of ligatures (they only appear
 ;; *if* your font supports them!) against `html-mode', a built-in
-;; mode; and `web-mode', a third-party mode. Please note, that for
-;; complex cases -- such as variadic ligature support, like the arrows
-;; in the Fira Code font -- you must amend the
-;; `ligature-composition-table' directly, as `ligature-set-ligatures'
-;; only supports simple strings.
+;; mode; and `web-mode', a third-party mode.  It also enables all known
+;; `Cascadia Code' ligatures against `prog-mode', and one ligature
+;; (`www') against every known major mode.
+;;
+;; Please note, that for complex cases -- such as variadic ligature
+;; support, like the arrows in the Fira Code font -- you must amend
+;; the `ligature-composition-table' directly, as
+;; `ligature-set-ligatures' only supports simple strings.
 ;;
 ;; The command `ligature-generate-ligatures' does all the hard work of
 ;; making the ligatures you configured in the `:config' section
-;; work. It's recommended that you triggered the command in a mode
-;; hook so that it runs when the desired major mode is activated.
+;; work.  To activate ligatures put `ligature-mode' or
+;; `global-ligature-mode' after you configure the ligatures you want.
 ;;
 ;; LIMITATIONS
 ;; -----------
 ;;
 ;; You can only have one character map to a regexp of ligatures that
-;; must apply. This is partly a limitation of Emacs's
-;; `set-char-table-range' and also of this package. No attempt is made
-;; to 'merge' groups of regexp. This is only really going to cause
+;; must apply.  This is partly a limitation of Emacs's
+;; `set-char-table-range' and also of this package.  No attempt is made
+;; to 'merge' groups of regexp.  This is only really going to cause
 ;; issues if you rely on multiple mode entries in
 ;; `ligature-composition-table' to fulfill all the desired ligatures
 ;; you want in a mode, or if you indiscriminately call
@@ -127,17 +144,17 @@ ligatures `=' and `==' that together form `!=' and `!=='.")
 
 ;;;###autoload
 (defun ligature-set-ligatures (modes ligatures)
-  "Replace LIGATURES in MODES
+  "Replace LIGATURES in MODES.
 
 Converts a list of ligatures, in simplified string format, to
-MODES. As there is no easy way of computing which ligatures
+MODES.  As there is no easy way of computing which ligatures
 were already defined, this function will replace any existing
 ligature definitions in `ligature-composition-table' with
 LIGATURES for MODES.
 
 Example:
 
-  (ligature-add-ligatures '(web-mode html-mode) '(\"<!--\" \"-->\"))
+  (ligature-set-ligatures '(web-mode html-mode) '(\"<!--\" \"-->\"))
 
 Adds support for the ligatures `<!--' and `-->' to `web-mode', a
 third-party major mode; and `html-mode', a built-in major
@@ -192,6 +209,17 @@ The changes are then made local to the current buffer."
                                   ;; range.
                                   `([,(concat "." (cdr rule)) 0 font-shape-gstring]))))))
     (setq-local composition-function-table table)))
+
+;;;###autoload
+(define-minor-mode ligature-mode "Enables typographic ligatures" nil nil nil
+  (ligature-generate-ligatures))
+
+(defun turn-on-ligature-mode ()
+  "Turn on command `ligature-mode'."
+  (ligature-mode t))
+
+(define-globalized-minor-mode global-ligature-mode ligature-mode turn-on-ligature-mode)
+
 
 (provide 'ligature)
 ;;; ligature.el ends here
