@@ -186,8 +186,6 @@ define their parent as `prog-mode'.
 
 The changes are then made local to the current buffer."
   (interactive)
-  (unless ligature-composition-table
-    (error "There are no configured ligature mappings. You must add ligature mappings yourself. Please see the commentary in the `ligature.el' file"))
   (let ((table (make-char-table nil)))
     (dolist (ligature-table ligature-composition-table)
       (let ((modes (car ligature-table)) ; `rst-mode', `html-mode', etc.
