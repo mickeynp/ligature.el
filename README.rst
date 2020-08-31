@@ -2,6 +2,9 @@
  Typographic Ligatures in Emacs
 ================================
 
+
+.. image:: cascadia-code-full.svg 
+
 This package maps ordinary graphemes (characters) to fancy ligatures,
 if both your version of Emacs and the font supports it.
 
