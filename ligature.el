@@ -212,7 +212,9 @@ The changes are then made local to the current buffer."
 
 ;;;###autoload
 (define-minor-mode ligature-mode "Enables typographic ligatures" nil nil nil
-  (ligature-generate-ligatures))
+  (if ligature-mode
+      (ligature-generate-ligatures)
+    (setq-local composition-function-table (default-value 'composition-function-table))))
 
 (defun turn-on-ligature-mode ()
   "Turn on command `ligature-mode'."
