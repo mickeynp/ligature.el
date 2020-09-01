@@ -124,6 +124,19 @@
 
 (require 'cl-lib)
 
+(defgroup ligature nil
+  "Typographic Ligatures in Emacs"
+  :group 'faces
+  :prefix "ligature-")
+
+(defcustom ligature-ignored-major-modes '(minibuffer-inactive-mode)
+  "Major modes that will never have ligatures applied to them.
+
+Unlike `ligature-generate-ligatures' the ignored major modes are
+only checked when the minor mode `ligature-mode' is enabled."
+  :type '(repeat symbol)
+  :group 'ligature)
+
 (defvar ligature-composition-table nil
   "Alist of ligature compositions.
 
@@ -212,9 +225,10 @@ The changes are then made local to the current buffer."
 
 ;;;###autoload
 (define-minor-mode ligature-mode "Enables typographic ligatures" nil nil nil
-  (if ligature-mode
-      (ligature-generate-ligatures)
-    (setq-local composition-function-table (default-value 'composition-function-table))))
+  (if (not ligature-mode)
+      (setq-local composition-function-table (default-value 'composition-function-table))
+    (unless (memq major-mode ligature-ignored-major-modes)
+      (ligature-generate-ligatures))))
 
 (defun turn-on-ligature-mode ()
   "Turn on command `ligature-mode'."
