@@ -182,6 +182,8 @@ expression that will match against ligatures beginning with that
 first character."
   (let (grouped-ligatures)
     (dolist (ligature ligatures)
+      (when (< (length ligature) 2)
+        (error "Ligature `%s' must be 2 characters or longer" ligature))
       (let ((key (substring ligature 0 1)))
         (push (substring ligature 1) (alist-get key grouped-ligatures nil nil #'equal))))
     (dolist (group grouped-ligatures)
