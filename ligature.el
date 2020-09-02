@@ -191,15 +191,15 @@ first character."
 
 ;;;###autoload
 (defun ligature-generate-ligatures ()
-  "Generate mode-specific character tables for ligatures.
+  "Ligate the current buffer using its major mode to determine ligature sets
 
 The ligature generator traverses `ligature-composition-table' and
-applies every ligature definition from every mode that is a
-`derived-mode-p' of the current major mode.  That means
-`prog-mode' will likely match most programming major modes that
-define their parent as `prog-mode'.
+applies every ligature definition from every mode that matches
+either `t' (indicating that a ligature mapping always applies);
+or a major mode or list of major mode symbols that are
+`derived-mode-p' of the current buffer's major mode.
 
-The changes are then made local to the current buffer."
+The changes are then made buffer-local."
   (interactive)
   (let ((table (make-char-table nil)))
     (dolist (ligature-table ligature-composition-table)
