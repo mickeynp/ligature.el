@@ -39,8 +39,9 @@ Support for this feature is new. You must meet a number of requirements to ensur
 
    Common programming fonts include `Cascadia Code
    <https://github.com/microsoft/cascadia-code>`__ and `Fira Code
-   <https://github.com/tonsky/FiraCode>`__. For variable width fonts,
-   the world is your oyster.
+   <https://github.com/tonsky/FiraCode>`__.
+
+   For variable width fonts, the world is your oyster.
 
 4. Ideally, your Emacs is built with Cairo support. Without it, you may experience issues;
 
