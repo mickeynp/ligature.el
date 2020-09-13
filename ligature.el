@@ -89,7 +89,7 @@
 ;; EXAMPLES
 ;; --------
 ;;
-;; Map two ligatures in `web-mode' and `html-mode'. As they are simple
+;; Map two ligatures in `web-mode' and `html-mode'.  As they are simple
 ;; (meaning, they do not require complex regular expressions to ligate
 ;; properly) using their simplified string forms is enough:
 ;;
@@ -134,7 +134,7 @@
   "Major modes that will never have ligatures applied to them.
 
 Unlike `ligature-generate-ligatures' the ignored major modes are
-only checked when the minor mode `ligature-mode' is enabled."
+only checked when the minor mode command `ligature-mode' is enabled."
   :type '(repeat symbol)
   :group 'ligature)
 
@@ -172,7 +172,7 @@ with LIGATURES for MODES.
 
 Some ligatures are variable-length, such as arrows and borders,
 and need a regular expression to accurately represent the range
-of characters needed to ligate them. In that case, you must use a
+of characters needed to ligate them.  In that case, you must use a
 cons cell of `(STR-CHAR . REGEXP)' where `STR-CHR' is the first
 character in the ligature and `REGEXP' is a regular expression
 that matches the _rest_ of the ligature range.
@@ -209,14 +209,28 @@ string of a single character" str-char))
       ;; matchers. It's likely the regex matchers supercede anything
       ;; the literal matchers may encapsulate, so we must ensure they
       ;; are checked first.
-      (let ((sorted-matchers (sort (cdr group) (lambda (a b) (if (eq (car a) 'literal) nil t)))))
+      (let ((regexp-matchers (cl-remove-if (apply-partially 'equal 'literal) (cdr group) :key #'car))
+            ;; Additionally we need to ditch the `literal' symbol (and
+            ;; just keep the cdr, which is the string literal), even
+            ;; though it's a legitimate `rx' form, because `(group (|
+            ;; (literal "a") (literal "aa") ...)' will NOT yield the
+            ;; same automatic grouping of shortest-to-longest matches
+            ;; like the canonical version that does _not_ use literal.
+            (literal-matchers (mapcan 'cdr (cl-remove-if (apply-partially 'equal 'regex) (cdr group) :key #'car))))
         (setf (alist-get (car group)
                          (alist-get modes ligature-composition-table nil 'remove #'equal) nil 'remove #'equal)
-              (macroexpand `(rx (group (| ,@sorted-matchers)))))))))
+              (macroexpand `(rx (|
+                                 ;; `rx' does not like nils so we have
+                                 ;; to filter them
+                                 ;; manually. Furthermore, we prefer
+                                 ;; regexp to literal matches and want
+                                 ;; them to appear first.
+                                 ,@(cl-remove-if 'null (list (if regexp-matchers `(group (| ,@regexp-matchers)) nil)
+                                                             (if literal-matchers `(group (| ,@literal-matchers)) nil)))))))))))
 
 ;;;###autoload
 (defun ligature-generate-ligatures ()
-  "Ligate the current buffer using its major mode to determine ligature sets
+  "Ligate the current buffer using its major mode to determine ligature sets.
 
 The ligature generator traverses `ligature-composition-table' and
 applies every ligature definition from every mode that matches
