@@ -85,21 +85,22 @@
 ;;   ;; per mode with `ligature-mode'.
 ;;   (global-ligature-mode t))
 ;;
-;; The example above registers a couple of ligatures (they only appear
-;; *if* your font supports them!) against `html-mode', a built-in
-;; mode; and `web-mode', a third-party mode.  It also enables all known
-;; `Cascadia Code' ligatures against `prog-mode', and one ligature
-;; (`www') against every known major mode.
 ;;
-;; Please note, that for complex cases -- such as variadic ligature
-;; support, like the arrows in the Fira Code font -- you must amend
-;; the `ligature-composition-table' directly, as
-;; `ligature-set-ligatures' only supports simple strings.
+;; EXAMPLES
+;; --------
 ;;
-;; The command `ligature-generate-ligatures' does all the hard work of
-;; making the ligatures you configured in the `:config' section
-;; work.  To activate ligatures put `ligature-mode' or
-;; `global-ligature-mode' after you configure the ligatures you want.
+;; Map two ligatures in `web-mode' and `html-mode'. As they are simple
+;; (meaning, they do not require complex regular expressions to ligate
+;; properly) using their simplified string forms is enough:
+;;
+;;
+;;
+;; This example creates regexp ligatures so that `=' matches against
+;; zero-or-more of `=' characters that may or may not optionally end
+;; with `>' or `<'.
+;;
+;; (ligature-set-ligatures 'markdown-mode `(("=" ,(rx (+ "=") (? (| ">" "<"))))
+;;                                          ("-" ,(rx (+ "-")))))
 ;;
 ;; LIMITATIONS
 ;; -----------
@@ -161,35 +162,57 @@ ligatures `=' and `==' that together form `!=' and `!=='.")
 (defun ligature-set-ligatures (modes ligatures)
   "Replace LIGATURES in MODES.
 
-Converts a list of ligatures, in simplified string format, to
-MODES.  As there is no easy way of computing which ligatures
-were already defined, this function will replace any existing
-ligature definitions in `ligature-composition-table' with
-LIGATURES for MODES.
+Converts a list of LIGATURES, where each element is either a cons
+cell of `(STR-CHAR . REGEXP)' or a string to ligate, for all
+modes in MODES.  As there is no easy way of computing which
+ligatures were already defined, this function will replace any
+existing ligature definitions in `ligature-composition-table'
+with LIGATURES for MODES.
 
-Example:
 
-  (ligature-set-ligatures '(web-mode html-mode) '(\"<!--\" \"-->\"))
+Some ligatures are variable-length, such as arrows and borders,
+and need a regular expression to accurately represent the range
+of characters needed to ligate them. In that case, you must use a
+cons cell of `(STR-CHAR . REGEXP)' where `STR-CHR' is the first
+character in the ligature and `REGEXP' is a regular expression
+that matches the _rest_ of the ligature range.
 
-Adds support for the ligatures `<!--' and `-->' to `web-mode', a
-third-party major mode; and `html-mode', a built-in major
-mode. Note, however, that any existing ligature entries that
-start with `<' or `-' are replaced.
-
-LIGATURES grouped by the first character of each entry and
-passed, untouched, to `regexp-opt' to be turned into a regular
-expression that will match against ligatures beginning with that
-first character."
+For examples, see the commentary in `ligature.el'."
   (let (grouped-ligatures)
     (dolist (ligature ligatures)
-      (when (< (length ligature) 2)
-        (error "Ligature `%s' must be 2 characters or longer" ligature))
-      (let ((key (substring ligature 0 1)))
-        (push (substring ligature 1) (alist-get key grouped-ligatures nil nil #'equal))))
+      (cond
+       ;; the simplest case - we have a string we wish to ligate
+       ((stringp ligature)
+        (if (< (length ligature) 2)
+            (error "Ligature `%s' must be 2 characters or longer" ligature)
+          (let ((str-char (substring ligature 0 1)))
+            (push (list 'literal (substring ligature 1))
+                  (alist-get str-char grouped-ligatures nil nil #'equal)))))
+       ;; cons of (STR-CHAR . REGEXP) where STR-CHR must be 1 char long
+       ((consp ligature)
+        (let ((str-char (car ligature))
+              (ligature-regexp (cadr ligature)))
+          (unless (= (length str-char) 1)
+            (error "Ligature cons cell has a str-char of `%s' but must be a \
+string of a single character" str-char))
+          (push (list 'regex
+                      ;; we can supply either a regexp string _or_ an unexpanded `rx' macro.
+                      (if (stringp ligature-regexp) ligature-regexp
+                        (macroexpand ligature-regexp)))
+                (alist-get str-char grouped-ligatures nil nil #'equal))))))
+    ;; given a grouped alist of ligatures, we enumerate each group and
+    ;; update the `ligature-composition-table'.
     (dolist (group grouped-ligatures)
-      (setf (alist-get (car group)
-                       (alist-get modes ligature-composition-table nil 'remove #'equal) nil 'remove #'equal)
-            (regexp-opt (cdr group))))))
+      ;; Sort the grouped ligatures - containing lists of either
+      ;; `literal' or `regex' as the car of the type of atom in the
+      ;; cdr - as we want the literal matchers _after_ the regex
+      ;; matchers. It's likely the regex matchers supercede anything
+      ;; the literal matchers may encapsulate, so we must ensure they
+      ;; are checked first.
+      (let ((sorted-matchers (sort (cdr group) (lambda (a b) (if (eq (car a) 'literal) nil t)))))
+        (setf (alist-get (car group)
+                         (alist-get modes ligature-composition-table nil 'remove #'equal) nil 'remove #'equal)
+              (macroexpand `(rx (group (| ,@sorted-matchers)))))))))
 
 ;;;###autoload
 (defun ligature-generate-ligatures ()
@@ -210,9 +233,9 @@ The changes are then made buffer-local."
         ;; If `mode' is t we always apply the rules, regardless of
         ;; whether `derived-mode-p' matches or not.
         (when (or (booleanp modes) (cl-remove-if 'null (mapcar 'derived-mode-p
-                                                            (if (listp modes)
-                                                                modes
-                                                              (list modes)))))
+                                                               (if (listp modes)
+                                                                   modes
+                                                                 (list modes)))))
           (dolist (rule rules)
             (set-char-table-range table (string-to-char (car rule))
                                   ;; in order for Emacs to properly
