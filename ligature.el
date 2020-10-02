@@ -208,6 +208,7 @@ The changes are then made local to the current buffer."
                                   ;; beginning of a character table
                                   ;; range.
                                   `([,(concat "." (cdr rule)) 0 font-shape-gstring]))))))
+    (set-char-table-parent table composition-function-table)
     (setq-local composition-function-table table)))
 
 ;;;###autoload
