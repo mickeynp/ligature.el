@@ -19,13 +19,17 @@ that works with ``Cascadia Code`` (and most probably other fonts, too).
 Compatibility and Version Requirements
 ======================================
 
-The library in Emacs that makes it work is very new, and there are
-certain requirements you must meet for the package to function
-correctly:
+Support for this feature is new. You must meet a number of requirements to ensure the package works correctly:
 
 1. You must use Emacs 27.1 or later;
 
-   You can check by typing ``M-x emacs-version``
+   You can check by typing ``M-x emacs-version``.
+
+   **NOTE**: There are reports of crashes in Emacs 27.1. There is a
+   fix in upstream versions of Emacs.
+
+   Ideally, if at all possible, you should attempt to use a build of
+   Emacs that includes this fix. See below for details.
 
 2. Your Emacs must be built with Harfbuzz enabled -- this is the default as of Emacs 27.1, but obscure platforms may not support it;
 
@@ -35,8 +39,9 @@ correctly:
 
    Common programming fonts include `Cascadia Code
    <https://github.com/microsoft/cascadia-code>`__ and `Fira Code
-   <https://github.com/tonsky/FiraCode>`__. For variable width fonts,
-   the world is your oyster.
+   <https://github.com/tonsky/FiraCode>`__.
+
+   For variable width fonts, the world is your oyster.
 
 4. Ideally, your Emacs is built with Cairo support. Without it, you may experience issues;
 
@@ -48,6 +53,18 @@ correctly:
       ``cairo-version-string`` should say "1.16.0" or later.
 
       See above. It may work perfectly fine with a lower version, however.
+
+
+Crash issues in Emacs 27.1
+--------------------------
+
+If you are using a release build of Emacs 27.1 then you may `experience hangs or crashes <https://github.com/mickeynp/ligature.el/issues/10>`__ with the following message::
+
+  Attempt to shape unibyte text
+
+The source of the fix is `this commit <http://git.savannah.gnu.org/cgit/emacs.git/commit/?id=fe903c5ab7354b97f80ecf1b01ca3ff1027be446>`__, but it did not make it into Emacs 27.1, unfortunately.
+
+However, if you built Emacs off the ``master`` or ``native-comp`` branch then you likely have the fix already in place.
 
 
 How does it work?
