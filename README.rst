@@ -3,7 +3,7 @@
 ================================
 
 
-.. image:: cascadia-code-full.svg 
+.. image:: cascadia-code-full.svg
 
 This package maps ordinary graphemes (characters) to fancy ligatures,
 if both your version of Emacs and the font supports it.
@@ -72,31 +72,61 @@ How does it work?
 
 Unlike almost all text editors that support ligatures, you are free to choose which ligatures you want and which modes they apply to. That is rather important as you may only want some ligatures in certain modes, and perhaps none at all in other modes. With this package you can freely pick and choose.
 
+Quickstart Guide
+----------------
+
+You can copy and paste the example snippet near the end. It'll give you basic support for *Cascadia Code*, but many of the ligations are similar across fonts. You will most likely have to amend this sample if you want fancier features.
+
+
+Adding New Ligations
+--------------------
+
+This is very easy to do. You can create ligations with the function ``ligature-set-ligatures``.
+
+You must also enable ``M-x ligature-mode`` in the mode(s) you want it to apply to. The ligations are disabled if you turn off this minor mode, and you can enable it *globally* with ``M-x global-ligature-mode``.
+
+You must have the list of ligations you want Emacs to ligate. For instance, ``==>`` to turn into an arrow, for example. You also need the list of major mode(s) you want it apply to; or, you can tell the ligation engine to apply it everywhere. You can make as many calls to ``ligature-set-ligatures`` as you like.
+
+Here is a very simple example that enables simple HTML ligations for web-related major modes using the *string notation* to create ligations::
+
+  (ligature-set-ligatures '(html-mode nxml-mode web-mode) '("<!--" "-->" "</>" "</" "/>" "://"))
+
+When you evaluate the form the change should take effect immediately in ``html-mode``, ``nxml-mode``, and ``web-mode``. Occasionally, you may have to "reload" the configuration in a major mode. This is usually only required if you are experimenting. Simply toggle ``M-x ligature-mode`` or ``M-x global-ligature-mode``.
+
+You can also supply ``t`` in lieu of a list of major modes. Any ligations registered with ``t`` will have their ligations applied *everywhere* in Emacs.
+
+Complex Compositions
+~~~~~~~~~~~~~~~~~~~~
+
+Some fonts support variable-length ligations, such as headings or arrows. The usual *string notation* used above is not always enough. You can build your own regular expressions and the ligation engine will try -- emphasis *try* -- to combine your custom regular expressions with any existing *string notations* that may already exist.
+
+To use the regular expression syntax you can add forms of ``(STR-CHAR . REGEXP)``, like so::
+
+  (ligature-set-ligatures 'markdown-mode '(("=" (rx (+ "=") (? (| ">" "<"))))
+                                           ("-" (rx (+ "-")))))
+
+This creates two ligation mappings: one for ligations beginning with ``=`` and the other for ``-``. You must give the starting character of a ligation so Emacs's composition engine knows how to compose the beginning of a ligature. The second part of the form is an ``rx`` macro call that defines the regular expression. In this case it will match any length of ``=`` followed by an optional ``<`` or ``>`` to add arrow support.
+
+
+Removing or browsing existing compositions
+------------------------------------------
+
+If you are experimenting and you want to clear all existing compositions, you can do so with this command::
+
+  (setq ligature-composition-table nil)
+
+You can also view the variable's contents if you want to see how the ligation tool works. You can even edit it manually (see ``Technical Details`` below.)
+
+
+
+Technical Details
+-----------------
+
 Each buffer you want the ligatures to apply to require a call to ``ligature-generate-ligatures``. That command will check against a table of registered ligatures if the current buffer's major mode has any associated ligatures and, if it does, what they are. The command will check against anything that may be considered a valid parent of your buffer's major mode: for instance, a lot of programming major modes inherit from ``prog-mode``, so assigning ligatures to that major mode is a good way to ensure they work in most programming modes.
 
 To create a ligature mapping you can either update the alist ``ligature-composition-table`` directly or use the helper function ``ligature-set-ligatures``. I recommend you start with the latter helper function and only modify the table if you have complex requirements.
 
 Here is a simple example -- for a full, ready-to-go example, see the next section.
-
-::
-
-  (ligature-set-ligatures '(python-mode c-mode java-mode) '("!=" "==" "!=="))
-
-That will associate those three ligatures to the three modes in the list. Next, enable ``global-ligature-mode``, if you want ligature checks carried on all buffers, or in specific buffers with ``ligature-mode``.
-
-You can also enable ligature mappings for all possible buffer major modes by replacing ``MODES`` with ``t``::
-
-  (ligature-set-ligatures 't '("www"))
-
-Or in just a single mode::
-
-  (ligature-set-ligatures 'html-mode '("www"))
-
-If your requirements are complex, such as support for Fira Code's arrows you will have to amend the ``ligature-composition-table`` directly, like so::
-
-  (add-to-list 'ligature-composition-table `(rst-mode ("=" . ,(rx (+ "=")))))
-
-NOTE: Be careful when adding to the ligature composition table; you may override existing ligatures you've already created. You may have to manually 'merge' the ones you create with ``ligature-set-ligatures`` using regular expressions of your own!
 
 
 How do I install it?
@@ -111,6 +141,7 @@ This example snippet enables all ligatures for ``prog-mode`` and any
 major mode that derives from that mode; that is usually most
 programming-related modes. It's designed for the *Cascadia Code* font;
 you may find it won't work 100% if you use a different one.
+
 
 ::
 
