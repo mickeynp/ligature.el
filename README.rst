@@ -126,9 +126,6 @@ Each buffer you want the ligatures to apply to require a call to ``ligature-gene
 
 To create a ligature mapping you can either update the alist ``ligature-composition-table`` directly or use the helper function ``ligature-set-ligatures``. I recommend you start with the latter helper function and only modify the table if you have complex requirements.
 
-Here is a simple example -- for a full, ready-to-go example, see the next section.
-
-
 How do I install it?
 ====================
 
@@ -172,8 +169,6 @@ you may find it won't work 100% if you use a different one.
     (global-ligature-mode t))
 
 This is just an example. It's likely you'll want to configure it.
-Please open ``ligature.el`` and read the commentary. I also recommend
-you read the docstring for ``ligature-set-ligatures``.
 
 Can I contribute support for more fonts?
 ========================================
