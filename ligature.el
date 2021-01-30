@@ -29,6 +29,10 @@
 ;;
 ;;  1. You must use Emacs 27.1 or later;
 ;;
+;;     WARNING: Some issues report crash issues with Emacs versions
+;;              Emacs 27.1. This is fixed in an upstream version
+;;              currently only available in the master branch.
+;;
 ;;  2. Your Emacs must be built with Harfbuzz enabled -- this is the
 ;;     default as of Emacs 27.1, but obscure platforms may not support
 ;;     it;
