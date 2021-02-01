@@ -38,8 +38,9 @@ Support for this feature is new. You must meet a number of requirements to ensur
 3. You must have a font that supports the particular typographical ligature you wish to display. Emacs should skip the ones it does not recognize, however;
 
    Common programming fonts include `Cascadia Code
-   <https://github.com/microsoft/cascadia-code>`__ and `Fira Code
-   <https://github.com/tonsky/FiraCode>`__.
+   <https://github.com/microsoft/cascadia-code>`__, `Fira Code
+   <https://github.com/tonsky/FiraCode>`__ and `Iosevka
+   <https://github.com/be5invis/Iosevka>`__.
 
    For variable width fonts, the world is your oyster.
 
@@ -131,14 +132,15 @@ How do I install it?
 
 MELPA support etc. is coming soon, but until then, you can clone the repository and paste one of the example snippets below.
 
+These example snippets enables all ligatures for ``prog-mode`` and any
+major mode that derives from that mode; that is usually most
+programming-related modes.
+
 Cascadia Code
 -------------
 
-This example snippet enables all ligatures for ``prog-mode`` and any
-major mode that derives from that mode; that is usually most
-programming-related modes. It's designed for the *Cascadia Code* font;
+This snippet is designed for the *Cascadia Code* font;
 you may find it won't work 100% if you use a different one.
-
 
 ::
 
@@ -168,7 +170,25 @@ you may find it won't work 100% if you use a different one.
     ;; per mode with `ligature-mode'.
     (global-ligature-mode t))
 
-This is just an example. It's likely you'll want to configure it.
+Iosevka
+-------------
+
+This snippet is designed for the *Iosevka* font;
+you may find it won't work 100% if you use a different one.
+
+::
+
+  (use-package ligature
+    :load-path "path-to-ligature-repo"
+    :config
+    ;; Enable all Iosevka ligatures in programming modes
+    (ligature-set-ligatures 'prog-mode '("<---" "<--"  "<<-" "<-" "->" "-->" "--->" "<->" "<-->" "<--->" "<---->" "<!--"
+                                       "<==" "<===" "<=" "=>" "=>>" "==>" "===>" ">=" "<=>" "<==>" "<===>" "<====>" "<!---"
+                                       "<~~" "<~" "~>" "~~>" "::" ":::" "==" "!=" "===" "!=="
+                                       ":=" ":-" ":+" "<*" "<*>" "*>" "<|" "<|>" "|>" "+:" "-:" "=:" "<******>" "++" "+++")
+    ;; Enables ligature checks globally in all buffers. You can also do it
+    ;; per mode with `ligature-mode'.
+    (global-ligature-mode t))
 
 Can I contribute support for more fonts?
 ========================================
