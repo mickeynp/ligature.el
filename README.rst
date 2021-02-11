@@ -40,7 +40,7 @@ Support for this feature is new. You must meet a number of requirements to ensur
    Common programming fonts include `Cascadia Code
    <https://github.com/microsoft/cascadia-code>`__, `Fira Code
    <https://github.com/tonsky/FiraCode>`__, `Iosevka
-   <https://github.com/be5invis/Iosevka>`__, and `JetBrainsMono
+   <https://github.com/be5invis/Iosevka>`__, and `JetBrains Mono
    <https://github.com/JetBrains/JetBrainsMono>`__.
    
    For variable width fonts, the world is your oyster.
