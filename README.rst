@@ -137,8 +137,10 @@ These example snippets enables all ligatures for ``prog-mode`` and any
 major mode that derives from that mode; that is usually most
 programming-related modes.
 
-Cascadia Code
--------------
+You can find more font configurations in the `Wiki <https://github.com/mickeynp/ligature.el/wiki>`__
+
+Example Font Configuration: Cascadia Code
+-----------------------------------------
 
 This snippet is designed for the *Cascadia Code* font;
 you may find it won't work 100% if you use a different one.
@@ -171,91 +173,6 @@ you may find it won't work 100% if you use a different one.
     ;; per mode with `ligature-mode'.
     (global-ligature-mode t))
 
-Iosevka
--------
-
-This snippet is designed for the *Iosevka* font;
-you may find it won't work 100% if you use a different one.
-
-::
-
-  (use-package ligature
-    :load-path "path-to-ligature-repo"
-    :config
-    ;; Enable all Iosevka ligatures in programming modes
-    (ligature-set-ligatures 'prog-mode '("<---" "<--"  "<<-" "<-" "->" "-->" "--->" "<->" "<-->" "<--->" "<---->" "<!--"
-                                         "<==" "<===" "<=" "=>" "=>>" "==>" "===>" ">=" "<=>" "<==>" "<===>" "<====>" "<!---"
-                                         "<~~" "<~" "~>" "~~>" "::" ":::" "==" "!=" "===" "!=="
-                                         ":=" ":-" ":+" "<*" "<*>" "*>" "<|" "<|>" "|>" "+:" "-:" "=:" "<******>" "++" "+++"))
-    ;; Enables ligature checks globally in all buffers. You can also do it
-    ;; per mode with `ligature-mode'.
-    (global-ligature-mode t))
-
-JetBrains Mono
---------------
-
-This snippet is designed for the *JetBrains Mono* font;
-you may find it won't work 100% if you use a different one.
-
-::
-
-  (use-package ligature
-    :load-path "path-to-ligature-repo"
-    :config
-    ;; Enable all JetBrains Mono ligatures in programming modes
-    (ligature-set-ligatures 'prog-mode '("-|" "-~" "---" "-<<" "-<" "--" "->" "->>" "-->" "///" "/=" "/=="
-                                        "/>" "//" "/*" "*>" "***" "*/" "<-" "<<-" "<=>" "<=" "<|" "<||"
-                                        "<|||" "<|>" "<:" "<>" "<-<" "<<<" "<==" "<<=" "<=<" "<==>" "<-|"
-                                        "<<" "<~>" "<=|" "<~~" "<~" "<$>" "<$" "<+>" "<+" "</>" "</" "<*"
-                                        "<*>" "<->" "<!--" ":>" ":<" ":::" "::" ":?" ":?>" ":=" "::=" "=>>"
-                                        "==>" "=/=" "=!=" "=>" "===" "=:=" "==" "!==" "!!" "!=" ">]" ">:"
-                                        ">>-" ">>=" ">=>" ">>>" ">-" ">=" "&&&" "&&" "|||>" "||>" "|>" "|]"
-                                        "|}" "|=>" "|->" "|=" "||-" "|-" "||=" "||" ".." ".?" ".=" ".-" "..<"
-                                        "..." "+++" "+>" "++" "[||]" "[<" "[|" "{|" "??" "?." "?=" "?:" "##"
-                                        "###" "####" "#[" "#{" "#=" "#!" "#:" "#_(" "#_" "#?" "#(" ";;" "_|_"
-                                        "__" "~~" "~~>" "~>" "~-" "~@" "$>" "^=" "]#"))
-    ;; Enables ligature checks globally in all buffers. You can also do it
-    ;; per mode with `ligature-mode'.
-    (global-ligature-mode t))
-
-Monolisa
---------
-
-::
-
-
-  (use-package ligature
-    :load-path "path-to-ligature-repo"
-    :config
-    (ligature-set-ligatures 'prog-mode '("-->" "->" "->>" "-<" "--<"
-                                         "-~" "]#" ".-" "!=" "!=="
-                                         "#(" "#{" "#[" "#_" "#_("
-                                         "/=" "/==" "|||" "||" ;; "|"
-                                         "==" "===" "==>" "=>" "=>>"
-                                         "=<<" "=/" ">-" ">->" ">="
-                                         ">=>" "<-" "<--" "<->" "<-<"
-                                         "<!--" "<|" "<||" "<|||"
-                                         "<|>" "<=" "<==" "<==>" "<=>"
-                                         "<=<" "<<-" "<<=" "<~" "<~>"
-                                         "<~~" "~-" "~@" "~=" "~>"
-                                         "~~" "~~>" ".=" "..=" "---"
-                                         "{|" "[|" ".."  "..."  "..<"
-                                         ".?"  "::" ":::" "::=" ":="
-                                         ":>" ":<" ";;" "!!"  "!!."
-                                         "!!!"  "?."  "?:" "??"  "?="
-                                         "**" "***" "*>" "*/" "#:"
-                                         "#!"  "#?"  "##" "###" "####"
-                                         "#=" "/*" "/>" "//" "///"
-                                         "&&" "|}" "|]" "$>" "++"
-                                         "+++" "+>" "=:=" "=!=" ">:"
-                                         ">>" ">>>" "<:" "<*" "<*>"
-                                         "<$" "<$>" "<+" "<+>" "<>"
-                                         "<<" "<<<" "</" "</>" "^="
-                                         "%%" "'''" "\"\"\"" ))
-    ;; Enables ligature checks globally in all buffers. You can also do it
-    ;; per mode with `ligature-mode'.
-    (global-ligature-mode t))
-    
 Can I contribute support for more fonts?
 ========================================
 
