@@ -268,7 +268,8 @@ The changes are then made buffer-local."
     (setq-local composition-function-table table)))
 
 ;;;###autoload
-(define-minor-mode ligature-mode "Enables typographic ligatures" nil nil nil
+(define-minor-mode ligature-mode "Enables typographic ligatures"
+  :init-value nil :lighter nil :keymap nil
   (if (not ligature-mode)
       (setq-local composition-function-table (default-value 'composition-function-table))
     (unless (memq major-mode ligature-ignored-major-modes)
