@@ -250,10 +250,9 @@ The changes are then made buffer-local."
             (rules (cdr ligature-table))) ; alist of rules mapping a character to a regexp.
         ;; If `mode' is t we always apply the rules, regardless of
         ;; whether `derived-mode-p' matches or not.
-        (when (or (booleanp modes) (cl-remove-if 'null (mapcar 'derived-mode-p
-                                                               (if (listp modes)
-                                                                   modes
-                                                                 (list modes)))))
+        (when (or (eq modes t) (cl-some #'derived-mode-p (if (listp modes)
+                                                             modes
+                                                           (list modes))))
           (dolist (rule rules)
             (set-char-table-range table (string-to-char (car rule))
                                   ;; in order for Emacs to properly
