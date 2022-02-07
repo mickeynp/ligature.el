@@ -275,7 +275,7 @@ The changes are then made buffer-local."
     (unless (memq major-mode ligature-ignored-major-modes)
       (ligature-generate-ligatures))))
 
-(defun turn-on-ligature-mode ()
+(defun ligature-mode-turn-on ()
   "Turn on command `ligature-mode'."
   (ligature-mode t))
 
