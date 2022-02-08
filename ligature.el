@@ -6,7 +6,7 @@
 ;; Version: 1.0
 ;; Keywords: tools faces
 ;; Homepage: https://www.github.com/mickeynp/ligature.el
-;; Package-Requires: ((emacs "27.1"))
+;; Package-Requires: ((emacs "26"))
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -269,11 +269,22 @@ The changes are then made buffer-local."
 
 ;;;###autoload
 (define-minor-mode ligature-mode "Enables typographic ligatures"
-  :init-value nil :lighter nil :keymap nil
-  (if (not ligature-mode)
-      (setq-local composition-function-table (default-value 'composition-function-table))
-    (unless (memq major-mode ligature-ignored-major-modes)
-      (ligature-generate-ligatures))))
+  :init-value nil :lighter nil :keymapkeymap nil
+  (if (= emacs-major-version 27)
+      (message "ligature-mode is currently broken in emacs `%s' due to a bug in
+Emacs's core. For more information have a look at this ISSUE:
+https://github.com/mickeynp/ligature.el/issues/28."
+               emacs-major-version) 
+    (if (not ligature-mode)
+        (setq-localocal composition-function-tableition-function-table
+                        (default-value 'composition-function-table)) 
+      (unless (memq major-mode ligature-ignored-major-modes)
+        (ligature-generate-ligatures)))))
+
+(defun turn-on-ligature-mode ()
+  "Turn on command `ligature-mode'."
+  (make-obsolete turn-on-ligature-mode ligature-mode-turn-on "28")
+  (ligature-mode t))
 
 (defun ligature-mode-turn-on ()
   "Turn on command `ligature-mode'."
