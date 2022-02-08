@@ -274,10 +274,9 @@ The changes are then made buffer-local."
       (message "ligature-mode is currently broken in emacs `%s' due to a bug in
 Emacs's core. For more information have a look at this ISSUE:
 https://github.com/mickeynp/ligature.el/issues/28."
-               emacs-major-version) 
+               emacs-major-version)
     (if (not ligature-mode)
-        (setq-localocal composition-function-tableition-function-table
-                        (default-value 'composition-function-table)) 
+        (setq-local composition-function-table (default-value 'composition-function-table))
       (unless (memq major-mode ligature-ignored-major-modes)
         (ligature-generate-ligatures)))))
 
