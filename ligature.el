@@ -1,11 +1,12 @@
-;;; ligature.el --- display typographical ligatures in major modes  -*- lexical-binding: t; -*-
+;;; ligature.el --- Display typographical ligatures in major modes  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020  Mickey Petersen
 
 ;; Author: Mickey Petersen <mickey@masteringemacs.org>
+;; Version: 1.0
 ;; Keywords: tools faces
 ;; Homepage: https://www.github.com/mickeynp/ligature.el
-;; Package-Requires: ((emacs "27.1"))
+;; Package-Requires: ((emacs "26"))
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
@@ -151,9 +152,9 @@ of (STR-CHAR . LIGATURE-PATTERN) and MODES is either:
 
   a. A major mode, such as `prog-mode' or `c-mode';
 
-  b. A list of major modes, such as `(prog-mode c-mode)';
+  b. A list of major modes, such as `(prog-mode `c-mode')';
 
-  c. The value `t', indicating the associated ligature mappings
+  c. The value t, indicating the associated ligature mappings
   must apply to _all_ modes, even internal ones.
 
 A STR-CHAR is a string consisting of a _single_ character that
@@ -213,14 +214,14 @@ string of a single character" str-char))
       ;; matchers. It's likely the regex matchers supercede anything
       ;; the literal matchers may encapsulate, so we must ensure they
       ;; are checked first.
-      (let ((regexp-matchers (cl-remove-if (apply-partially 'equal 'literal) (cdr group) :key #'car))
+      (let ((regexp-matchers (cl-remove-if (apply-partially #'equal 'literal) (cdr group) :key #'car))
             ;; Additionally we need to ditch the `literal' symbol (and
             ;; just keep the cdr, which is the string literal), even
             ;; though it's a legitimate `rx' form, because `(group (|
             ;; (literal "a") (literal "aa") ...)' will NOT yield the
             ;; same automatic grouping of shortest-to-longest matches
             ;; like the canonical version that does _not_ use literal.
-            (literal-matchers (mapcan 'cdr (cl-remove-if (apply-partially 'equal 'regex) (cdr group) :key #'car))))
+            (literal-matchers (mapcan 'cdr (cl-remove-if (apply-partially #'equal 'regex) (cdr group) :key #'car))))
         (setf (alist-get (car group)
                          (alist-get modes ligature-composition-table nil 'remove #'equal) nil 'remove #'equal)
               (macroexpand `(rx (|
@@ -234,11 +235,11 @@ string of a single character" str-char))
 
 ;;;###autoload
 (defun ligature-generate-ligatures ()
-  "Ligate the current buffer using its major mode to determine ligature sets.
+  "Ligate the current buffer using its major mode to determine ligature set.
 
 The ligature generator traverses `ligature-composition-table' and
 applies every ligature definition from every mode that matches
-either `t' (indicating that a ligature mapping always applies);
+either t (indicating that a ligature mapping always applies);
 or a major mode or list of major mode symbols that are
 `derived-mode-p' of the current buffer's major mode.
 
@@ -268,17 +269,28 @@ The changes are then made buffer-local."
 
 ;;;###autoload
 (define-minor-mode ligature-mode "Enables typographic ligatures"
-  :init-value nil :lighter nil :keymap nil
-  (if (not ligature-mode)
-      (setq-local composition-function-table (default-value 'composition-function-table))
-    (unless (memq major-mode ligature-ignored-major-modes)
-      (ligature-generate-ligatures))))
+  :init-value nil :lighter nil :keymapkeymap nil
+  (if (= emacs-major-version 27)
+      (message "ligature-mode is currently broken in emacs `%s' due to a bug in
+Emacs's core. For more information have a look at this ISSUE:
+https://github.com/mickeynp/ligature.el/issues/28."
+               emacs-major-version)
+    (if (not ligature-mode)
+        (setq-local composition-function-table (default-value 'composition-function-table))
+      (unless (memq major-mode ligature-ignored-major-modes)
+        (ligature-generate-ligatures)))))
 
 (defun turn-on-ligature-mode ()
   "Turn on command `ligature-mode'."
+  (make-obsolete turn-on-ligature-mode ligature-mode-turn-on "28")
   (ligature-mode t))
 
-(define-globalized-minor-mode global-ligature-mode ligature-mode turn-on-ligature-mode)
+(defun ligature-mode-turn-on ()
+  "Turn on command `ligature-mode'."
+  (ligature-mode t))
+
+;;;###autoload
+(define-globalized-minor-mode global-ligature-mode ligature-mode ligature-mode-turn-on)
 
 
 (provide 'ligature)
