@@ -271,10 +271,10 @@ The changes are then made buffer-local."
 (define-minor-mode ligature-mode "Enables typographic ligatures."
   :init-value nil :lighter nil :keymap nil
   (if (= emacs-major-version 27)
-      (message "ligature-mode is currently broken in emacs `%s' due to a bug in
+      (warn "ligature-mode is currently broken in emacs `%s' due to a bug in
 Emacs's core. For more information have a look at this ISSUE:
 https://gjithub.com/mickeynp/ligature.el/issues/28."
-               emacs-major-version)
+            emacs-major-version)
     (if (not ligature-mode)
         (setq-local composition-function-table (default-value 'composition-function-table))
       (unless (memq major-mode ligature-ignored-major-modes)
