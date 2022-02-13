@@ -280,13 +280,9 @@ https://gjithub.com/mickeynp/ligature.el/issues/28."
       (unless (memq major-mode ligature-ignored-major-modes)
         (ligature-generate-ligatures)))))
 
-(defun turn-on-ligature-mode ()
+(defun ligature-mode-turn-on ()
   "Turn on command `ligature-mode'."
-  (make-obsolete 'turn-on-ligature-mode 'ligature-mode-turn-on "28")
   (ligature-mode t))
-
-
-(defalias 'turn-on-ligature-mode #'ligature-mode-turn-on)
 
 ;;;###autoload
 (define-globalized-minor-mode global-ligature-mode ligature-mode ligature-mode-turn-on)
