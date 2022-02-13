@@ -285,9 +285,8 @@ https://gjithub.com/mickeynp/ligature.el/issues/28."
   (make-obsolete 'turn-on-ligature-mode 'ligature-mode-turn-on "28")
   (ligature-mode t))
 
-(defun ligature-mode-turn-on ()
-  "Turn on command `ligature-mode'."
-  (ligature-mode t))
+
+(defalias 'turn-on-ligature-mode #'ligature-mode-turn-on)
 
 ;;;###autoload
 (define-globalized-minor-mode global-ligature-mode ligature-mode ligature-mode-turn-on)
