@@ -131,7 +131,7 @@
 (require 'cl-lib)
 
 (defgroup ligature nil
-  "Typographic Ligatures in Emacs"
+  "Typographic Ligatures in Emacs."
   :group 'faces
   :prefix "ligature-")
 
@@ -152,15 +152,15 @@ of (STR-CHAR . LIGATURE-PATTERN) and MODES is either:
 
   a. A major mode, such as `prog-mode' or `c-mode';
 
-  b. A list of major modes, such as `(prog-mode `c-mode')';
+  b. A list of major modes;
 
   c. The value t, indicating the associated ligature mappings
   must apply to _all_ modes, even internal ones.
 
 A STR-CHAR is a string consisting of a _single_ character that
-defines the beginning of a ligature. The LIGATURE-PATTERN is a
+defines the beginning of a ligature.  The LIGATURE-PATTERN is a
 regexp that should match all the various ligatures that start
-with STR-CHAR. For instance, `!' as a STR-CHAR may have a two
+with STR-CHAR.  For instance, `!' as a STR-CHAR may have a two
 ligatures `=' and `==' that together form `!=' and `!=='.")
 
 ;;;###autoload
@@ -268,7 +268,7 @@ The changes are then made buffer-local."
     (setq-local composition-function-table table)))
 
 ;;;###autoload
-(define-minor-mode ligature-mode "Enables typographic ligatures"
+(define-minor-mode ligature-mode "Enables typographic ligatures."
   :init-value nil :lighter nil :keymapkeymap nil
   (if (= emacs-major-version 27)
       (message "ligature-mode is currently broken in emacs `%s' due to a bug in
