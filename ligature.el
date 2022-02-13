@@ -269,7 +269,7 @@ The changes are then made buffer-local."
 
 ;;;###autoload
 (define-minor-mode ligature-mode "Enables typographic ligatures."
-  :init-value nil :lighter nil :keymapkeymap nil
+  :init-value nil :lighter nil :keymap nil
   (if (= emacs-major-version 27)
       (message "ligature-mode is currently broken in emacs `%s' due to a bug in
 Emacs's core. For more information have a look at this ISSUE:
