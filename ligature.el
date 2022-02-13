@@ -273,7 +273,7 @@ The changes are then made buffer-local."
   (if (= emacs-major-version 27)
       (message "ligature-mode is currently broken in emacs `%s' due to a bug in
 Emacs's core. For more information have a look at this ISSUE:
-https://github.com/mickeynp/ligature.el/issues/28."
+https://gjithub.com/mickeynp/ligature.el/issues/28."
                emacs-major-version)
     (if (not ligature-mode)
         (setq-local composition-function-table (default-value 'composition-function-table))
@@ -282,7 +282,7 @@ https://github.com/mickeynp/ligature.el/issues/28."
 
 (defun turn-on-ligature-mode ()
   "Turn on command `ligature-mode'."
-  (make-obsolete turn-on-ligature-mode ligature-mode-turn-on "28")
+  (make-obsolete 'turn-on-ligature-mode 'ligature-mode-turn-on "28")
   (ligature-mode t))
 
 (defun ligature-mode-turn-on ()
