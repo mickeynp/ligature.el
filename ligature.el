@@ -273,7 +273,7 @@ The changes are then made buffer-local."
   (if (= emacs-major-version 27)
       (warn "ligature-mode is currently broken in emacs `%s' due to a bug in
 Emacs's core. For more information have a look at this ISSUE:
-https://gjithub.com/mickeynp/ligature.el/issues/28."
+https://github.com/mickeynp/ligature.el/issues/28."
             emacs-major-version)
     (if (not ligature-mode)
         (setq-local composition-function-table (default-value 'composition-function-table))
