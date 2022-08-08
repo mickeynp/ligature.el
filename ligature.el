@@ -1,6 +1,6 @@
 ;;; ligature.el --- Display typographical ligatures in major modes  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  Mickey Petersen
+;; Copyright (C) 2020-22  Mickey Petersen
 
 ;; Author: Mickey Petersen <mickey@masteringemacs.org>
 ;; Version: 1.0
@@ -28,14 +28,14 @@
 ;;
 ;; For this to work, you must meet several criteria:
 ;;
-;;  1. You must use Emacs 27.1 or later;
+;;  1. You must use Emacs 28.1 or later;
 ;;
 ;;     WARNING: Some issues report crash issues with Emacs versions
-;;              Emacs 27.1. This is fixed in an upstream version
+;;              Emacs 28.1. This is fixed in an upstream version
 ;;              currently only available in the master branch.
 ;;
 ;;  2. Your Emacs must be built with Harfbuzz enabled -- this is the
-;;     default as of Emacs 27.1, but obscure platforms may not support
+;;     default as of Emacs 28.1, but obscure platforms may not support
 ;;     it;
 ;;
 ;;  3. You must have a font that supports the particular typographical
