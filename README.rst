@@ -87,7 +87,9 @@ You must also enable ``M-x ligature-mode`` in the mode(s) you want it to apply t
 
 You must have the list of ligations you want Emacs to ligate. For instance, ``==>`` to turn into an arrow, for example. You also need the list of major mode(s) you want it apply to; or, you can tell the ligation engine to apply it everywhere. You can make as many calls to ``ligature-set-ligatures`` as you like.
 
-Here is a very simple example that enables simple HTML ligations for web-related major modes using the *string notation* to create ligations::
+Here is a very simple example that enables simple HTML ligations for web-related major modes using the *string notation* to create ligations
+
+.. code-block:: elisp
 
   (ligature-set-ligatures '(html-mode nxml-mode web-mode) '("<!--" "-->" "</>" "</" "/>" "://"))
 
@@ -100,7 +102,9 @@ Complex Compositions
 
 Some fonts support variable-length ligations, such as headings or arrows. The usual *string notation* used above is not always enough. You can build your own regular expressions and the ligation engine will try -- emphasis *try* -- to combine your custom regular expressions with any existing *string notations* that may already exist.
 
-To use the regular expression syntax you can add forms of ``(STR-CHAR . REGEXP)``, like so::
+To use the regular expression syntax you can add forms of ``(STR-CHAR . REGEXP)``, like so
+
+.. code-block:: elisp
 
   (ligature-set-ligatures 'markdown-mode '(("=" (rx (+ "=") (? (| ">" "<"))))
                                            ("-" (rx (+ "-")))))
@@ -111,7 +115,9 @@ This creates two ligation mappings: one for ligations beginning with ``=`` and t
 Removing or browsing existing compositions
 ------------------------------------------
 
-If you are experimenting and you want to clear all existing compositions, you can do so with this command::
+If you are experimenting and you want to clear all existing compositions, you can do so with this command
+
+.. code-block:: elisp
 
   (setq ligature-composition-table nil)
 
@@ -143,7 +149,7 @@ Example Font Configuration: Cascadia Code
 This snippet is designed for the *Cascadia Code* font;
 you may find it won't work 100% if you use a different one.
 
-::
+.. code-block:: elisp
 
   (use-package ligature
     :load-path "path-to-ligature-repo"
