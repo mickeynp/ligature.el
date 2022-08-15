@@ -135,7 +135,7 @@ To create a ligature mapping you can either update the alist ``ligature-composit
 How do I install it?
 ====================
 
-MELPA support etc. is coming soon, but until then, you can clone the repository and paste one of the example snippets below.
+The package is available here or through MELPA.
 
 These example snippets enables all ligatures for ``prog-mode`` and any
 major mode that derives from that mode; that is usually most
