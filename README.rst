@@ -66,7 +66,6 @@ The source of the fix is `this commit <http://git.savannah.gnu.org/cgit/emacs.gi
 
 However, if you built Emacs off the ``master`` branch then you most certainly have the fix already.
 
-
 How does it work?
 =================
 
@@ -111,6 +110,8 @@ To use the regular expression syntax you can add forms of ``(STR-CHAR . REGEXP)`
 
 This creates two ligation mappings: one for ligations beginning with ``=`` and the other for ``-``. You must give the starting character of a ligation so Emacs's composition engine knows how to compose the beginning of a ligature. The second part of the form is an ``rx`` macro call that defines the regular expression. In this case it will match any length of ``=`` followed by an optional ``<`` or ``>`` to add arrow support.
 
+**NOTE**: You can find complete examples for Fira and Cascadia Code in the Wiki.
+
 
 Removing or browsing existing compositions
 ------------------------------------------
@@ -142,6 +143,13 @@ major mode that derives from that mode; that is usually most
 programming-related modes.
 
 You can find more font configurations in the `Wiki <https://github.com/mickeynp/ligature.el/wiki>`__
+
+Complex Font Configuration for Cascadia and Fira Code
+-----------------------------------------------------
+
+If you are looking for a complete set of ligatures for both Fira or Cascadia Code, then visit the `Wiki <https://github.com/mickeynp/ligature.el/wiki>`__ for a complete example.
+
+If you use another font, you may find that many of the ligatures still work.
 
 Example Font Configuration: Cascadia Code
 -----------------------------------------
