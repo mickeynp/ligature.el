@@ -25,7 +25,7 @@ Support for this feature is new. You must meet a number of requirements to ensur
 
    You can check by typing ``M-x emacs-version``.
 
-   **NOTE**: There are critical issues in Emacs 27.1 and 27.2. 
+   **NOTE**: There are critical issues in Emacs 27.1 and 27.2.
    Ideally, if at all possible, you should attempt to use a build of
    Emacs that includes this fix. See below for details.
 
@@ -40,7 +40,7 @@ Support for this feature is new. You must meet a number of requirements to ensur
    <https://github.com/tonsky/FiraCode>`__, `Iosevka
    <https://github.com/be5invis/Iosevka>`__, and `JetBrains Mono
    <https://github.com/JetBrains/JetBrainsMono>`__.
-   
+
    For variable width fonts, the world is your oyster.
 
 4. Ideally, your Emacs is built with Cairo support. Without it, you may experience issues;
@@ -184,6 +184,43 @@ you may find it won't work 100% if you use a different one.
     ;; Enables ligature checks globally in all buffers. You can also do it
     ;; per mode with `ligature-mode'.
     (global-ligature-mode t))
+
+Sample Regex Font Configuration: Comic Code
+-------------------------------------------
+
+This snippet is designed to match *Comic Code* ligatures that can be infinitely long.
+
+.. code-block:: elisp
+
+   ;; Enable ligatures for all major programming modes
+   (ligature-set-ligatures 'prog-mode '(("-" (rx (+ "-")))
+		                       ("-" (rx (* "-") ">"))
+			               ("+" (rx (+ "+")))
+	           		       ("<" (rx (+ "=")))
+			               ("<" (rx (+ "=") ">"))
+			               ("<" (rx (+ "~")))
+			               ("<" (rx (+ "~") ">"))
+			               ("<" (rx "!" (+ "-")))
+			               ("<" (rx (+ "-")))
+			               ("<" (rx (+ "-") ">"))
+			               ("<" (rx "|"))
+			               (">" (rx (+ "=")))
+			               (">" (rx ">" (+ "=")))
+			               (">" (rx ">" (+ "=") ">"))
+			               (">" (rx (+ "-")))
+			               (">" (rx (+ "-") "<"))
+			               ("~" (rx (+ "~")))
+			               ("~" (rx (+ "~") ">"))
+			               ("=" (rx (+ "=")))
+			               "!="
+			               "!=="
+			               "[|"
+			               "|]"
+			               "{|"
+			               "|}"
+			               "|>"
+			               ))
+
 
 Can I contribute support for more fonts?
 ========================================
