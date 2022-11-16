@@ -188,11 +188,11 @@ you may find it won't work 100% if you use a different one.
 Sample Regex Font Configuration: Comic Code
 -------------------------------------------
 
-This snippet is designed to match *Comic Code* ligatures that can be infinitely long.
+This snippet is designed to match *Comic Code* ligatures of varying length.
 
 .. code-block:: elisp
 
-   ;; Enable ligatures for all major programming modes
+   ;; Enable all Comic Code ligatures in programming modes.
    (ligature-set-ligatures 'prog-mode '(("-" (rx (+ "-")))
 		                        ("-" (rx (* "-") ">"))
 			                ("+" (rx (+ "+")))

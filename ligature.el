@@ -88,7 +88,6 @@
 ;;                                        "\\\\" "://"))
 ;;
 ;;   ;; Enable all Comic Code ligatures in programming modes
-;;
 ;;   (ligature-set-ligatures 'prog-mode '(("-" (rx (+ "-")))
 ;;			                  ("-" (rx (* "-") ">"))
 ;;			                  ("+" (rx (+ "+")))
