@@ -185,6 +185,8 @@ you may find it won't work 100% if you use a different one.
     ;; per mode with `ligature-mode'.
     (global-ligature-mode t))
 
+*NOTE:* `:load-path "path-to-ligature-repo"` is not necessary if installed via MELPA.
+
 Can I contribute support for more fonts?
 ========================================
 
