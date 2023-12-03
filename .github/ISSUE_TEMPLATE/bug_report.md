@@ -20,6 +20,10 @@ Then it's very likely the issue is with **Emacs core**, and not `ligature.el`. T
 
 Crash bugs are known to occur in Emacs 27.1 and Emacs 27.2. Make sure you're using the latest Emacs. Garbled or truncated ligatures are the result of Harfbuzz (a library used by Emacs) display bugs in Emacs. They're mostly all fixed in Emacs 29.1 or later.
 
-**If you are experiencing these issues using the latest version of Emacs, try reproducing the problem with the smallest possible set of ligatures first**. It's unlikely I can do anything if the issue is in Emacs core, but I can take a look. I may ask that you `M-x report-emacs-bug` and follow their bug submission guidelines.
+**If you are experiencing these issues using the latest version of Emacs, try reproducing the problem with the smallest possible set of ligatures first**. 
+
+It's unlikely I can do anything if the issue is in Emacs core, but I can take a look. I may ask that you `M-x report-emacs-bug` and follow their bug submission guidelines.
+
+*Feel free to delete this text if you wish to proceed with a bug report.*
 
 Thanks!
