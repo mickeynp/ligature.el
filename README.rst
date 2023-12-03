@@ -74,13 +74,21 @@ Unlike almost all text editors that support ligatures, you are free to choose wh
 Quickstart Guide
 ----------------
 
-You can copy and paste the example snippet near the end. It'll give you basic support for *Cascadia Code*, but many of the ligations are similar across fonts. You will most likely have to amend this sample if you want fancier features.
+You can copy and paste the example snippet near the end. It'll give you basic support for *Cascadia Code*, but many of the ligations are similar across fonts. You will most likely have to amend this sample if you want fancier features. Check the `Wiki <https://github.com/mickeynp/ligature.el/wiki>`__ for other font configurations.
 
+Limitations
+-----------
+
+Fonts are often built with *stylistic sets*. They're also called *character variants* among other names. Typically, a stylistic set is a set of changes to apply to a font --- such as ligatures. They can also be things like alternative characters (such as a slashed zero.) Usually, they're known by their cryptic shorthand names: `ss01`, `ss03`, etc.
+
+Emacs does not support stylistic sets. If you have a feature that you want to enable, and it's gated behind a stylistic set, then you're (probably) out of luck. You cannot manipulate, from the elisp side anyway, the stylistic sets to use in the harfbuzz / Emacs display engine. It works for ligatures as this package works around that limitation by exploiting a requirement that some east-Asian languages rely on ligature-like grapheme clusters to render text. So, if you want other font features enabled, you probably can't.
+
+One workaround is to rebuild the font with the feature(s) you want enabled by default. It's quick and painless. The `Font Tools OpenType Feature Freezer <https://github.com/twardoch/fonttools-opentype-feature-freezer>`__ can do just that. Give that a try if you want specific stylistic sets enabled by default.
 
 Adding New Ligations
 --------------------
 
-This is very easy to do. You can create ligations with the function ``ligature-set-ligatures``.
+This is very easy to do, but do check if someone's done the work for you first on the `Wiki <https://github.com/mickeynp/ligature.el/wiki>`__. You can create ligations with the function ``ligature-set-ligatures``.
 
 You must also enable ``M-x ligature-mode`` in the mode(s) you want it to apply to. The ligations are disabled if you turn off this minor mode, and you can enable it *globally* with ``M-x global-ligature-mode``.
 
@@ -110,7 +118,7 @@ To use the regular expression syntax you can add forms of ``(STR-CHAR . REGEXP)`
 
 This creates two ligation mappings: one for ligations beginning with ``=`` and the other for ``-``. You must give the starting character of a ligation so Emacs's composition engine knows how to compose the beginning of a ligature. The second part of the form is an ``rx`` macro call that defines the regular expression. In this case it will match any length of ``=`` followed by an optional ``<`` or ``>`` to add arrow support.
 
-**NOTE**: You can find complete examples for Fira and Cascadia Code in the Wiki.
+**NOTE**: You can find complete examples for Fira and Cascadia Code in the `Wiki <Https://Github.Com/Mickeynp/Ligature.El/Wiki>`__.
 
 
 Removing or browsing existing compositions
@@ -155,12 +163,14 @@ Example Font Configuration: Cascadia Code
 -----------------------------------------
 
 This snippet is designed for the *Cascadia Code* font;
-you may find it won't work 100% if you use a different one.
+you may find it won't work 100% if you use a different one. 
+
+Please visit the `Wiki <https://github.com/mickeynp/ligature.el/wiki>`__ for complete examples for many other popular fonts.
 
 .. code-block:: elisp
 
+  ;; This assumes you've installed the package via MELPA.
   (use-package ligature
-    :load-path "path-to-ligature-repo"
     :config
     ;; Enable the "www" ligature in every possible major mode
     (ligature-set-ligatures 't '("www"))
@@ -185,11 +195,10 @@ you may find it won't work 100% if you use a different one.
     ;; per mode with `ligature-mode'.
     (global-ligature-mode t))
 
-*NOTE:* `:load-path "path-to-ligature-repo"` is not necessary if installed via MELPA.
+*NOTE:* `:load-path "/path/to/ligature.el/"` is required if you're installing the package using git directly.
 
 Can I contribute support for more fonts?
 ========================================
 
 I'm glad you asked. Yes, please. If you want to configure ligatures
-for common programming fonts not already listed here, please raise a
-PR.
+for common programming fonts not already listed here, please raise a github issue, but do check if the `Wiki <https://github.com/mickeynp/ligature.el/wiki>`__ has what you need already.
