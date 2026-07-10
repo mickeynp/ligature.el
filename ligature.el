@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020-22  Mickey Petersen
 
 ;; Author: Mickey Petersen <mickey@masteringemacs.org>
-;; Version: 1.0
+;; Version: 0.0.0-git
 ;; Keywords: tools faces
 ;; Homepage: https://www.github.com/mickeynp/ligature.el
 ;; Package-Requires: ((emacs "28"))
